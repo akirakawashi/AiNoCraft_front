@@ -1,0 +1,330 @@
+/* src/styles/launcher.css */
+
+.launcher-page {
+    margin-top: 150px;
+    padding: 0 40px;
+}
+
+/* ==================== Launcher Hero ==================== */
+.launcher-hero {
+    position: relative;
+    background: linear-gradient(135deg, rgba(123, 136, 255, 0.1) 0%, rgba(255, 123, 198, 0.1) 100%);
+    border-radius: 30px;
+    padding: 80px 60px;
+    margin: 0 auto 30px;
+    max-width: 1300px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.launcher-hero-content {
+    flex: 1;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.launcher-hero-content h1 {
+    font-size: 56px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #fff 0%, #7b88ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+}
+
+.launcher-hero-bg {
+    flex: 1;
+    position: relative;
+    height: 300px;
+    opacity: 0.6;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.hero-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+/* ==================== Download Section ==================== */
+.launcher-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.launcher-download h2,
+.launcher-requirements h2 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.download-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.download-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.download-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+}
+
+.download-card h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.card-description {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.card-details {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    padding: 15px;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.detail-item:last-child {
+    margin-bottom: 0;
+}
+
+.detail-item .label {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.detail-item .value {
+    color: #7b88ff;
+    font-weight: 600;
+}
+
+.download-button {
+    width: 100%;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #7b88ff 0%, #ff7bc6 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.download-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(123, 136, 255, 0.3);
+}
+
+/* ==================== Requirements Section ==================== */
+
+.requirements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+}
+
+.requirements-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.requirements-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.requirements-card.recommended {
+    border: 1px solid rgba(123, 136, 255, 0.4);
+    background: linear-gradient(135deg, rgba(123, 136, 255, 0.08) 0%, rgba(255, 123, 198, 0.08) 100%);
+}
+
+.badge {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: linear-gradient(135deg, #7b88ff 0%, #ff7bc6 100%);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.requirements-card h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 25px;
+    margin-top: 0;
+}
+
+.requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.requirements-list li {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 15px;
+    padding: 12px 0;
+    padding-left: 28px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.requirements-list li:last-child {
+    border-bottom: none;
+}
+
+.requirements-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #7b88ff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 1024px) {
+    .launcher-hero {
+        flex-direction: column;
+        padding: 60px 40px;
+        gap: 40px;
+    }
+
+    .launcher-hero-content h1 {
+        font-size: 42px;
+    }
+
+    .launcher-hero-bg {
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .launcher-page {
+        margin-top: 120px;
+    }
+
+    .launcher-hero {
+        margin: 0 20px 60px;
+        padding: 40px 30px;
+    }
+
+    .launcher-hero-content h1 {
+        font-size: 32px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+    }
+
+    .launcher-download,
+    .launcher-requirements,
+    .launcher-guide {
+        padding: 60px 20px;
+    }
+
+    .launcher-download h2,
+    .launcher-requirements h2,
+    .launcher-guide h2 {
+        font-size: 36px;
+    }
+
+    .section-subtitle {
+        margin-bottom: 40px;
+    }
+
+    .download-cards {
+        gap: 20px;
+    }
+
+    .download-card {
+        padding: 30px 20px;
+    }
+
+    .requirements-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .launcher-hero-content h1 {
+        font-size: 24px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+    }
+
+    .download-card h3 {
+        font-size: 22px;
+    }
+}

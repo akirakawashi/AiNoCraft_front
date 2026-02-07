@@ -1,0 +1,664 @@
+/* Контейнер для форм авторизации */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 120px 40px 40px;
+    gap: 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.auth-content {
+    width: 560px;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px) saturate(180%);
+    border-radius: 24px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.auth-header h2 {
+    font-size: 36px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 0%, #7b88ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+}
+
+/* Формы */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-container input {
+    width: 100%;
+    /* ensure space on both sides so placeholder never overlaps icons */
+    padding: 16px 48px 16px 48px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.input-container input:focus {
+    outline: none;
+    border-color: #7b88ff;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(123, 136, 255, 0.1);
+}
+
+.input-container input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.input-icon {
+    position: absolute;
+    left: 20px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.input-loader {
+    position: absolute;
+    right: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    pointer-events: none;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.input-hint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+}
+
+.input-hint.valid {
+    color: #2ed573;
+}
+
+.input-hint.invalid {
+    color: #ff4757;
+}
+
+/* Checkbox -*/
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 400;
+}
+
+.checkbox-input {
+    width: 18px;
+    height: 18px;
+    accent-color: #7b88ff;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+}
+
+.checkbox-custom {
+    /* Для кастомного чекбокса, если нужно */
+    display: none;
+}
+
+.checkbox-text {
+    user-select: none;
+}
+
+.checkbox-label a {
+    color: #7b88ff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.checkbox-label a:hover {
+    text-decoration: underline;
+}
+
+/* Пароль и действия */
+.password-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.forgot-password-btn {
+    background: none;
+    border: none;
+    color: #7b88ff;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.forgot-password-btn:hover {
+    text-decoration: underline;
+}
+
+.forgot-password-link {
+    color: #7b88ff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+    color: #a5b0ff;
+}
+
+/* Кнопка отправки формы */
+.auth-button {
+    background: linear-gradient(135deg, #7b88ff 0%, #ff7bc6 100%);
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.auth-button:hover::before {
+    left: 100%;
+}
+
+.auth-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(123, 136, 255, 0.4);
+}
+
+.button-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+.auth-button:hover .button-icon {
+    transform: translateX(5px);
+}
+/* Стили для неактивной кнопки */
+.auth-button.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: linear-gradient(135deg, #a5aefc 0%, #fca5d9 100%);
+}
+
+.auth-button.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.auth-button.disabled:hover::before {
+    left: -100%;
+}
+
+.auth-button.disabled:hover .button-icon {
+    transform: none;
+}
+
+/* Разделитель */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-divider span {
+    padding: 0 15px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 14px;
+}
+
+/* Ссылки */
+.auth-links {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-links p {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.auth-links a {
+    color: #7b88ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.back-link {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 14px;
+}
+
+/* Декор */
+.auth-decoration {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 400px;
+}
+
+.decoration-item {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.decoration-item:hover {
+    transform: translateX(10px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.decoration-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.decoration-item h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.decoration-item p {
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+}
+
+/* Strength bar для пароля */
+.password-strength {
+    margin-top: 8px;
+}
+
+.strength-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.strength-bar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.strength-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+}
+
+/* Адаптивность форм */
+@media (max-width: 1024px) {
+    .auth-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .auth-decoration {
+        flex-direction: row;
+        max-width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .decoration-item {
+        flex: 1;
+        min-width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 100px 20px 20px;
+    }
+    
+    .auth-card {
+        padding: 30px 20px;
+    }
+    
+    .auth-header h2 {
+        font-size: 28px;
+    }
+    
+    .decoration-item {
+        min-width: 100%;
+    }
+}
+
+/* Обработка ошибок и состояний */
+.error-message {
+    padding: 15px 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.alert-error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ff6b6b;
+}
+
+/* Успешное состояние */
+.success-message {
+    padding: 15px 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.18);
+    color: #16a34a;
+}
+
+.success-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.success-text {
+    color: inherit;
+}
+
+.error-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.field-error {
+    display: block;
+    color: #ff6b6b;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.input-error {
+    border-color: #ff6b6b !important;
+    background: rgba(239, 68, 68, 0.05) !important;
+}
+
+/* Отключенное состояние для полей */
+.form-input:disabled,
+.checkbox-input:disabled,
+.forgot-password-btn:disabled,
+.auth-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* === Стили для VerifyEmailForm === */
+.code-input {
+    text-align: center;
+    letter-spacing: 8px;
+    font-weight: 600;
+    font-size: 20px;
+    font-family: 'Courier New', monospace;
+}
+
+.verify-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.resend-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: #7b88ff;
+    border: 1px solid rgba(123, 136, 255, 0.3);
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.resend-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(123, 136, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.resend-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.resend-button.disabled:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 10px 0;
+    margin-top: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Дополнительные стили для reset password страницы */
+.secondary-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: #7b88ff;
+    border: 1px solid rgba(123, 136, 255, 0.3);
+}
+
+.secondary-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(123, 136, 255, 0.5);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 3%;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-footer p {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 5px;
+}
+
+.auth-link {
+    color: #7b88ff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+    color: #a5b0ff;
+}
+
+/* === Dev Panel === */
+.dev-panel {
+    position: fixed;
+    top: 120px;
+    left: 20px;
+    background: rgba(20, 20, 30, 0.95);
+    border: 2px solid #7b88ff;
+    border-radius: 12px;
+    padding: 15px;
+    z-index: 9999;
+    min-width: 280px;
+    box-shadow: 0 8px 32px rgba(123, 136, 255, 0.3);
+}
+
+.dev-panel-title {
+    color: #7b88ff;
+    font-weight: 700;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+.dev-panel-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.dev-button {
+    padding: 10px 12px;
+    border: 1px solid rgba(123, 136, 255, 0.3);
+    border-radius: 8px;
+    background: #444;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dev-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(123, 136, 255, 0.2);
+}
+
+.dev-panel-info {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    padding-top: 10px;
+    border-top: 1px solid rgba(123, 136, 255, 0.2);
+}

@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: ainocraft-frontend-prod
+    restart: unless-stopped
+    
+    image: ghcr.io/ainocraft/ainocraft-frontend:latest
+    environment:
+      - REACT_APP_API_URL=https://api.ainocraft.com/api/v1
+
+    networks:
+      - ainocraft_network
+
+networks:
+  ainocraft_network:
+    external: true

@@ -1,0 +1,388 @@
+/* Контейнер страницы условий */
+.terms-page {
+  min-height: 100vh;
+  padding: 120px 40px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.terms-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 70px;
+}
+
+/* Шапка страницы */
+.terms-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.terms-header h1 {
+  font-size: 48px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, #7b88ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 15px;
+}
+
+/* Декоративная полоска под заголовком (как на главной/магазине) */
+.terms-header h1 {
+  position: relative;
+}
+
+.terms-header h1::after {
+  content: '';
+  display: block;
+  width: 600px;
+  height: 4px;
+  margin: 18px auto 0;
+  border-radius: 6px;
+  /* Fade to transparent at edges */
+  background: linear-gradient(90deg,
+    rgba(123,136,255,0) 0%,
+    rgba(123,136,255,0.95) 18%,
+    rgba(255,119,198,0.95) 82%,
+    rgba(255,119,198,0) 100%
+  );
+  box-shadow: 0 6px 20px rgba(123, 136, 255, 0.12);
+  opacity: 0.98;
+  /* Vertical fade (top/bottom) using mask for smooth transparency) */
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1), rgba(0,0,0,0));
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1), rgba(0,0,0,0));
+}
+
+.terms-description {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Контент с табами */
+.terms-content {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px) saturate(180%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+/* Табы */
+.terms-tabs {
+  display: flex;
+  gap: 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 20px 30px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #7b88ff, #ff77c6);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.tab-button:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-button.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tab-button.active::after {
+  transform: scaleX(1);
+}
+
+/* Тело контента */
+.terms-body {
+  padding: 50px;
+  max-height: 70vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(123, 136, 255, 0.5) rgba(255, 255, 255, 0.05);
+}
+
+.terms-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terms-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.terms-body::-webkit-scrollbar-thumb {
+  background: rgba(123, 136, 255, 0.5);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.terms-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(123, 136, 255, 0.7);
+}
+
+/* Секция контента */
+.terms-section h2 {
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, #7b88ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+}
+
+.terms-intro {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: rgba(123, 136, 255, 0.1);
+  border-left: 4px solid #7b88ff;
+  border-radius: 8px;
+}
+
+/* Блоки правил */
+.rules-block {
+  margin-bottom: 40px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.rules-block:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(123, 136, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.rules-block h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rules-block h3::before {
+  content: '▸';
+  color: #7b88ff;
+  font-size: 28px;
+}
+
+.rules-block p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.rules-block ul {
+  list-style: none;
+  padding: 0;
+}
+
+.rules-block ul li {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.8;
+  margin-bottom: 12px;
+  padding-left: 0;
+  position: relative;
+}
+
+.rules-block ul li::before {
+  display: none;
+}
+
+.rules-block ul li strong {
+  color: #7b88ff;
+  font-weight: 600;
+}
+
+/* Блок наказания с выделением */
+.punishment-block {
+  background: linear-gradient(135deg, rgba(255, 119, 198, 0.12) 0%, rgba(255, 77, 148, 0.08) 100%);
+  border: 1px solid rgba(255, 119, 198, 0.25);
+  border-left: 4px solid #ff77c6;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+.punishment-block strong {
+  color: #ff77c6 !important;
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+/* Важный блок */
+.rules-block.important {
+  background: linear-gradient(135deg, rgba(255, 119, 198, 0.1) 0%, rgba(123, 136, 255, 0.1) 100%);
+  border: 1px solid rgba(255, 119, 198, 0.3);
+}
+
+.rules-block.important h3 {
+  color: #ff77c6;
+}
+
+.rules-block.important h3::before {
+  content: '⚠️';
+  font-size: 24px;
+}
+
+/* Футер условий */
+.terms-footer {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.terms-footer p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .terms-page {
+    padding: 100px 30px 30px;
+  }
+
+  .terms-header h1 {
+    font-size: 40px;
+  }
+
+  .terms-body {
+    padding: 40px 30px;
+  }
+
+  .terms-section h2 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .terms-page {
+    padding: 90px 20px 20px;
+  }
+
+  .terms-header h1 {
+    font-size: 32px;
+  }
+
+  .terms-description {
+    font-size: 16px;
+  }
+
+  .terms-tabs {
+    flex-direction: column;
+  }
+
+  .tab-button {
+    padding: 16px 20px;
+  }
+
+  .terms-body {
+    padding: 30px 20px;
+    max-height: 60vh;
+  }
+
+  .terms-section h2 {
+    font-size: 28px;
+  }
+
+  .rules-block {
+    padding: 20px;
+  }
+
+  .rules-block h3 {
+    font-size: 20px;
+  }
+
+  .rules-block ul li {
+    font-size: 14px;
+  }
+
+  .back-button {
+    font-size: 13px;
+    padding: 10px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .terms-header h1 {
+    font-size: 28px;
+  }
+
+  .terms-description {
+    font-size: 14px;
+  }
+
+  .terms-body {
+    padding: 20px 15px;
+  }
+
+  .terms-section h2 {
+    font-size: 24px;
+  }
+
+  .terms-intro {
+    font-size: 16px;
+    padding: 15px;
+  }
+
+  .rules-block {
+    padding: 15px;
+    margin-bottom: 30px;
+  }
+
+  .rules-block h3 {
+    font-size: 18px;
+  }
+
+  .rules-block p,
+  .rules-block ul li {
+    font-size: 14px;
+  }
+}

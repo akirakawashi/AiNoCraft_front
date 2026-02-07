@@ -1,0 +1,267 @@
+.crop-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.crop-modal {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px) saturate(180%);
+  border-radius: 24px;
+  width: 90%;
+  max-width: 550px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.crop-modal-header {
+  padding: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.crop-modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, #7b88ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.2s;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover:not(:disabled) {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.close-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.crop-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: rgba(0, 0, 0, 0.3);
+  flex-grow: 1;
+}
+
+.react-easy-crop {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.crop-controls {
+  padding: 24px 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.zoom-control {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.zoom-control label {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.zoom-control input[type="range"] {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.zoom-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7b88ff 0%, #ff7bc6 100%);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 12px rgba(123, 136, 255, 0.4);
+}
+
+.zoom-control input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(123, 136, 255, 0.6);
+}
+
+.zoom-control input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7b88ff 0%, #ff7bc6 100%);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 0 12px rgba(123, 136, 255, 0.4);
+}
+
+.zoom-control input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(123, 136, 255, 0.6);
+}
+
+.crop-modal-actions {
+  display: flex;
+  gap: 16px;
+  padding: 24px 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-cancel,
+.btn-confirm {
+  flex: 1;
+  padding: 14px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-cancel {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #7b88ff 0%, #ff7bc6 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 8px 24px rgba(123, 136, 255, 0.3);
+}
+
+.btn-confirm:hover:not(:disabled) {
+  box-shadow: 0 12px 32px rgba(123, 136, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-cancel:disabled,
+.btn-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Modal Loading Overlay - специфично для модального окна */
+.modal-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: rgba(6, 6, 8, 0.85);
+  z-index: 10001;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+/* glowing rotating ring behind logo */
+.modal-loading-overlay::before {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(123,136,255,0.18), rgba(255,123,198,0.18), rgba(123,136,255,0.18));
+  filter: blur(20px) saturate(140%);
+  opacity: 0.9;
+  animation: rotateRing 8s linear infinite;
+  pointer-events: none;
+  z-index: 9997;
+}
+
+/* subtle frosted layer */
+.modal-loading-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.22));
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+  z-index: 9996;
+  border-radius: 24px;
+}
+
+/* Переиспользуем .loading-image и .loading-text из global.css
+   Для модали используем те же стили, просто внутри .modal-loading-overlay */
+
+/* Animations - используются из global.css */
+/* @keyframes rotateRing, @keyframes float, @keyframes shimmer
+   определены в global.css, не дублируем здесь */
+
+/* Error Message Styles */
+.crop-error-message {
+  padding: 16px 24px;
+  margin: 30px 30px;
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  border-radius: 12px;
+  color: #ff4757;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crop-error-message::before {
+  content: '⚠';
+  font-size: 18px;
+}
