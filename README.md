@@ -232,18 +232,3 @@ npm test           # тестовый раннер CRA
 docker compose -f docker-compose.dev.yml up --build
 docker build -t ainocraft-frontend --build-arg REACT_APP_API_URL=http://localhost:8000/api/v1 .
 ```
-
-## Что стоит учитывать дальше
-
-- Добавить `.env.example`, чтобы onboarding был полностью самодостаточным.
-- Довести интеграцию магазина до реального checkout/payment flow.
-- Перевести локальные данные новостей и части личного кабинета на backend API.
-- Добавить smoke/integration tests для auth flow и protected routes.
-
-## Связанные части проекта
-
-- `AiNoCraft_back` - backend API, авторизация, работа с MinIO, баланс, письма и игровые endpoint'ы.
-- `AiNoCraft_Launc` - отдельный desktop launcher проекта.
-- `AiNoCraft_dep` - инфраструктурные docker-конфиги и Nginx-слой.
-
-Если нужен единый README на весь AiNoCraft, этот файл уже можно использовать как фронтенд-секцию и затем собрать общий root-level README вокруг backend, frontend, launcher и deployment-частей.
