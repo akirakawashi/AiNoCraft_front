@@ -8,7 +8,7 @@ const LauncherDownloadSection = () => {
       icon: '🪟',
       version: '1.0.0',
       size: '256 MB',
-      link: '#download-windows',
+      link: 'https://storage.ainocraft.com/downloads/AiNoCraftLauncher.exe',
       description: 'Самая популярная платформа'
     }
   ];

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Step = ({ number, title, description }) => (
   <div className="step">
@@ -41,10 +42,10 @@ const GettingStartedSection = () => {
       </div>
       
       <div className="getting-started-download">
-        <a href="/download" className="download-button windows">
+        <Link to="/launcher" className="download-button windows">
           <span className="download-icon">🪟</span>
           Windows
-        </a>
+        </Link>
       </div>
     </section>
   );

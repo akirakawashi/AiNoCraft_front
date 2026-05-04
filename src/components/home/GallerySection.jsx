@@ -1,10 +1,13 @@
-// src/components/home/GallerySection.jsx (исправленный)
 import React from 'react';
+import coverOne from '../../assets/imges/1.jpg';
+import coverMain from '../../assets/imges/COVER1.png';
+import coverCropped from '../../assets/imges/Cover_cropped.png';
+import coverWinter from '../../assets/imges/cover_winter.png';
+import coverEighteen from '../../assets/imges/cover_18.png';
 
 const GalleryItem = ({ title, description, image, isLarge = false }) => (
   <div className={`gallery-item ${isLarge ? 'gallery-item-large' : ''}`}>
     <img src={image} alt={title} />
-      <span style={{ color: 'white', fontSize: '24px' }}>🖼️</span>
     <div className="gallery-overlay">
       <h4>{title}</h4>
       <p>{description}</p>
@@ -17,28 +20,28 @@ const GallerySection = () => {
     {
       title: "Главная база",
       description: "Гигантский замок, построенный сообществом",
-      image: require('../../assets/imges/background.png'),
+      image: coverCropped,
       isLarge: true
     },
     {
       title: "PvP Арена",
       description: "Еженедельные турниры",
-      image: require('../../assets/imges/background.png'),
+      image: coverWinter,
     },
     {
       title: "Игровой город",
       description: "Торговый район",
-      image: require('../../assets/imges/background.png'),
+      image: coverMain,
     },
     {
       title: "Подземелья",
       description: "Исследование новых мест",
-      image: require('../../assets/imges/background.png'),
+      image: coverOne,
     },
     {
       title: "Уникальные мобы",
       description: "Кастомные создания",
-      image: require('../../assets/imges/background.png'),
+      image: coverEighteen,
     }
   ];
 

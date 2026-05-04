@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userService } from '../../services';
 import { useAuth } from '../../contexts/AuthContext';
+import { validatePassword, validatePasswordMatch } from '../../utils/passwordValidation';
 
 const ChangePasswordModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -13,66 +14,51 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
   });
   
   const [passwordStrength, setPasswordStrength] = useState({
-    level: 0,
-    label: 'Сложность пароля'
+    width: '0%',
+    color: '#ddd',
+    text: 'Сложность пароля'
   });
   
   const [passwordMatch, setPasswordMatch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [showReloadConfirm, setShowReloadConfirm] = useState(false);
+  
+  // Состояния для показа/скрытия паролей
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (formData.newPassword) {
-      calculatePasswordStrength(formData.newPassword);
+      setPasswordStrength(validatePassword(formData.newPassword).strength);
     } else {
-      setPasswordStrength({ level: 0, label: 'Сложность пароля' });
+      setPasswordStrength({ width: '0%', color: '#ddd', text: 'Сложность пароля' });
     }
 
     if (formData.confirmPassword) {
-      if (formData.newPassword === formData.confirmPassword) {
-        setPasswordMatch('✓ Пароли совпадают');
-      } else {
-        setPasswordMatch('✗ Пароли не совпадают');
-      }
+      const match = validatePasswordMatch(formData.newPassword, formData.confirmPassword);
+      setPasswordMatch(match.isMatch ? '✓ Пароли совпадают' : '✗ Пароли не совпадают');
     } else {
       setPasswordMatch('');
     }
   }, [formData.newPassword, formData.confirmPassword]);
 
-  const calculatePasswordStrength = (password) => {
-    let strength = 0;
-    let label = '';
-    
-    if (password.length >= 6) strength++;
-    if (password.length >= 10) strength++;
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-    if (/\d/.test(password)) strength++;
-    if (/[^a-zA-Z0-9]/.test(password)) strength++;
-
-    if (strength <= 2) {
-      label = 'Слабый пароль';
-    } else if (strength <= 3) {
-      label = 'Средний пароль';
-    } else if (strength <= 4) {
-      label = 'Хороший пароль';
-    } else {
-      label = 'Отличный пароль';
-    }
-    setPasswordStrength({ level: strength, label });
-  };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // UX validation
-    if (formData.newPassword !== formData.confirmPassword) {
-      setMessage({ type: 'error', text: 'Пароли не совпадают' });
+    // Валидация пароля
+    const passwordValidation = validatePassword(formData.newPassword);
+    if (!passwordValidation.isValid) {
+      setMessage({ type: 'error', text: passwordValidation.message });
       return;
     }
-    if (formData.newPassword.length < 6) {
-      setMessage({ type: 'error', text: 'Пароль должен содержать минимум 6 символов' });
+
+    // Валидация совпадения паролей
+    const matchValidation = validatePasswordMatch(formData.newPassword, formData.confirmPassword);
+    if (!matchValidation.isMatch) {
+      setMessage({ type: 'error', text: 'Пароли не совпадают' });
       return;
     }
 
@@ -133,7 +119,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
             <label htmlFor="oldPassword">Старый пароль</label>
             <div className="input-container">
               <input 
-                type="password" 
+                type={showOldPassword ? 'text' : 'password'}
                 id="oldPassword"
                 name="oldPassword"
                 value={formData.oldPassword}
@@ -141,6 +127,34 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                 required 
               />
               <span className="input-icon">🔒</span>
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowOldPassword(!showOldPassword)}
+              >
+                {showOldPassword ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="eye-gradient-old" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7b88ff"/>
+                        <stop offset="100%" stopColor="#ff7bc6"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M2.99902 3L20.999 21M9.8433 9.91364C9.32066 10.4536 8.99902 11.1892 8.99902 12C8.99902 13.6569 10.3422 15 12 15C12.8215 15 13.5667 14.669 14.1086 14.133M6.49902 6.64715C4.59972 7.90034 3.15305 9.78394 2.45703 12C3.73128 16.0571 7.52159 19 11.9992 19C13.9881 19 15.8414 18.4194 17.3988 17.4184M10.999 5.04939C11.328 5.01673 11.6617 5 11.9992 5C16.4769 5 20.2672 7.94291 21.5414 12C21.2607 12.894 20.8577 13.7338 20.3522 14.5" stroke="url(#eye-gradient-old)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="eye-gradient-old" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7b88ff"/>
+                        <stop offset="100%" stopColor="#ff7bc6"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="url(#eye-gradient-old)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="url(#eye-gradient-old)" strokeWidth="2"/>
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
           
@@ -148,7 +162,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
             <label htmlFor="newPassword">Новый пароль</label>
             <div className="input-container">
               <input 
-                type="password" 
+                type={showNewPassword ? 'text' : 'password'}
                 id="newPassword"
                 name="newPassword"
                 value={formData.newPassword}
@@ -157,13 +171,48 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                 minLength="6"
               />
               <span className="input-icon">🔑</span>
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                {showNewPassword ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="eye-gradient-new" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7b88ff"/>
+                        <stop offset="100%" stopColor="#ff7bc6"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M2.99902 3L20.999 21M9.8433 9.91364C9.32066 10.4536 8.99902 11.1892 8.99902 12C8.99902 13.6569 10.3422 15 12 15C12.8215 15 13.5667 14.669 14.1086 14.133M6.49902 6.64715C4.59972 7.90034 3.15305 9.78394 2.45703 12C3.73128 16.0571 7.52159 19 11.9992 19C13.9881 19 15.8414 18.4194 17.3988 17.4184M10.999 5.04939C11.328 5.01673 11.6617 5 11.9992 5C16.4769 5 20.2672 7.94291 21.5414 12C21.2607 12.894 20.8577 13.7338 20.3522 14.5" stroke="url(#eye-gradient-new)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="eye-gradient-new" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7b88ff"/>
+                        <stop offset="100%" stopColor="#ff7bc6"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="url(#eye-gradient-new)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="url(#eye-gradient-new)" strokeWidth="2"/>
+                  </svg>
+                )}
+              </button>
             </div>
             <div className="password-strength">
-              <div 
-                className="strength-bar" 
-                data-strength={passwordStrength.level}
-              ></div>
-              <div className="strength-label">{passwordStrength.label}</div>
+              <div className="strength-bar">
+                <div 
+                  className="strength-bar-fill" 
+                  style={{
+                    width: passwordStrength.width || '0%',
+                    backgroundColor: passwordStrength.color || '#ddd'
+                  }}
+                ></div>
+              </div>
+              <div className="strength-label" style={{ color: passwordStrength.color || '#666' }}>
+                {passwordStrength.text || 'Сложность пароля'}
+              </div>
             </div>
           </div>
           
@@ -171,7 +220,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
             <label htmlFor="confirmPassword">Повторите пароль</label>
             <div className="input-container">
               <input 
-                type="password" 
+                type={showConfirmPassword ? 'text' : 'password'}
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
@@ -179,6 +228,34 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
                 required 
               />
               <span className="input-icon">✓</span>
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="eye-gradient-confirm" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7b88ff"/>
+                        <stop offset="100%" stopColor="#ff7bc6"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M2.99902 3L20.999 21M9.8433 9.91364C9.32066 10.4536 8.99902 11.1892 8.99902 12C8.99902 13.6569 10.3422 15 12 15C12.8215 15 13.5667 14.669 14.1086 14.133M6.49902 6.64715C4.59972 7.90034 3.15305 9.78394 2.45703 12C3.73128 16.0571 7.52159 19 11.9992 19C13.9881 19 15.8414 18.4194 17.3988 17.4184M10.999 5.04939C11.328 5.01673 11.6617 5 11.9992 5C16.4769 5 20.2672 7.94291 21.5414 12C21.2607 12.894 20.8577 13.7338 20.3522 14.5" stroke="url(#eye-gradient-confirm)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="eye-gradient-confirm" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#7b88ff"/>
+                        <stop offset="100%" stopColor="#ff7bc6"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="url(#eye-gradient-confirm)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="12" cy="12" r="3" stroke="url(#eye-gradient-confirm)" strokeWidth="2"/>
+                  </svg>
+                )}
+              </button>
             </div>
             {passwordMatch && (
               <div className={`password-match ${formData.newPassword === formData.confirmPassword ? 'match' : 'no-match'}`}>

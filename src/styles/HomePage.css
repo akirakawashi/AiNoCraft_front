@@ -343,6 +343,20 @@ h1 {
     flex-wrap: wrap;
 }
 
+.getting-started-download .download-button {
+    width: auto;
+    max-width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.getting-started-download .download-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+}
+
 .download-button {
     display: flex;
     align-items: center;

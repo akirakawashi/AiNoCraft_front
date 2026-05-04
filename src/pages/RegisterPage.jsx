@@ -2,10 +2,10 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/register/RegisterForm';
 import VerifyEmailForm from '../components/register/VerifyEmailForm';
-import RegisterDecoration from '../components/register/RegisterDecoration';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/auth.css';
 import { authService } from '../services';
+import { validatePassword } from '../utils/passwordValidation';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -184,60 +184,6 @@ const RegisterPage = () => {
     }
   };
 
-  // Проверка сложности пароля
-  const checkPasswordStrength = (password) => {
-    if (!password) {
-      return { width: '0%', color: '#ddd', text: 'Сложность пароля', score: 0 };
-    }
-    
-    let score = 0;
-    
-    if (password.length >= 6) score += 1;
-    if (password.length >= 8) score += 1;
-    if (password.length >= 12) score += 1;
-    
-    if (/[a-z]/.test(password)) score += 1;
-    if (/[A-Z]/.test(password)) score += 1;
-    if (/[0-9]/.test(password)) score += 1;
-    if (/[^A-Za-z0-9]/.test(password)) score += 1;
-    
-    if (score < 3) {
-      return { width: '25%', color: '#ff4757', text: 'Слабый', score };
-    } else if (score < 5) {
-      return { width: '50%', color: '#ffa502', text: 'Средний', score };
-    } else if (score < 7) {
-      return { width: '75%', color: '#2ed573', text: 'Хороший', score };
-    } else {
-      return { width: '100%', color: '#00b894', text: 'Надежный', score };
-    }
-  };
-
-  // Валидация пароля
-  const validatePassword = (password) => {
-    const strength = checkPasswordStrength(password);
-    
-    if (password.length === 0) {
-      return { 
-        isValid: false, 
-        message: 'Придумайте пароль',
-        strength: { width: '0%', color: '#ddd', text: 'Сложность пароля' }
-      };
-    }
-    
-    const englishPattern = /^[A-Za-z0-9!@#$%^&*()_+\-=[\]{}|;:,.<>?]+$/;
-    const isCharsValid = englishPattern.test(password);
-    
-    if (!isCharsValid) {
-      return {
-        isValid: false,
-        message: '❌ Только английские буквы, цифры и спецсимволы',
-        strength
-      };
-    }
-    
-    return { isValid: true, message: '', strength };
-  };
-
   // Обработчик изменения полей
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -261,10 +207,9 @@ const RegisterPage = () => {
         email: emailValidation
       }));
     } else if (name === 'password') {
-      const passwordValidation = validatePassword(value);
       setValidation(prev => ({
         ...prev,
-        password: passwordValidation
+        password: validatePassword(value)
       }));
     }
   };
@@ -425,6 +370,41 @@ const RegisterPage = () => {
     clearError();
   };
 
+  // Проверка валидности всей формы (повторно используемая)
+  const isFormValid = () => {
+    return (
+      validation.login.isValid &&
+      validation.email.isValid &&
+      validation.password.isValid &&
+      formData.password === formData.confirmPassword &&
+      termsAccepted &&
+      !isLoading
+    );
+  };
+
+  // Собрать список причин, почему форма невалидна (для блока декорации)
+  const getFormErrors = () => {
+    const errors = [];
+    if (!validation.login.isValid) {
+      errors.push(validation.login.message || 'Логин должен содержать только латинские буквы и цифры (3–16 символов).');
+    }
+    if (!validation.email.isValid) {
+      errors.push(validation.email.message || 'Введите корректный email.');
+    }
+    if (!validation.password.isValid) {
+      // validation.password may include an errors[] array from validatePassword util
+      const passErrors = validation.password.errors && validation.password.errors.length ? validation.password.errors : [validation.password.message || 'Пароль не соответствует требованиям.'];
+      passErrors.forEach(e => errors.push(e));
+    }
+    if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
+      errors.push('Пароли не совпадают.');
+    }
+    if (!termsAccepted) {
+      errors.push('Необходимо согласиться с правилами сервера.');
+    }
+    return errors;
+  };
+
   return (
     <div className="register-page">
       {isLoading && (
@@ -437,36 +417,38 @@ const RegisterPage = () => {
       )}
 
       <div className="auth-container">
-        {registrationStage === 'form' ? (
-          <RegisterForm 
-            formData={formData}
-            validation={validation}
-            termsAccepted={termsAccepted}
-            isSubmitting={isLoading}
-            submitSuccess={submitSuccess}
-            submitError={submitError}
-            authError={error}
-            onInputChange={handleInputChange}
-            onTermsChange={handleTermsChange}
-            onSubmit={handleSubmit}
-            onLoginBlur={handleLoginBlur}
-            onEmailBlur={handleEmailBlur}
-          />
-        ) : (
-          <VerifyEmailForm
-            email={registeredEmail}
-            isSubmitting={isLoading}
-            submitError={submitError}
-            submitSuccess={submitSuccess}
-            authError={error}
-            onSubmit={handleVerifyCode}
-            onResendCode={handleResendCode}
-            onBack={handleBackToForm}
-            onClearError={() => setSubmitError(null)}
-          />
-        )}
-        
-        <RegisterDecoration />
+        <div className="auth-content">
+          {registrationStage === 'form' ? (
+            <RegisterForm 
+              formData={formData}
+              validation={validation}
+              termsAccepted={termsAccepted}
+              isSubmitting={isLoading}
+              submitSuccess={submitSuccess}
+              submitError={submitError}
+              authError={error}
+              onInputChange={handleInputChange}
+              onTermsChange={handleTermsChange}
+              onSubmit={handleSubmit}
+              onLoginBlur={handleLoginBlur}
+              onEmailBlur={handleEmailBlur}
+              getFormErrors={getFormErrors}
+              isFormValid={isFormValid}
+            />
+          ) : (
+            <VerifyEmailForm
+              email={registeredEmail}
+              isSubmitting={isLoading}
+              submitError={submitError}
+              submitSuccess={submitSuccess}
+              authError={error}
+              onSubmit={handleVerifyCode}
+              onResendCode={handleResendCode}
+              onBack={handleBackToForm}
+              onClearError={() => setSubmitError(null)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

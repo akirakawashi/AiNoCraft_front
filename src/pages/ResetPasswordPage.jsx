@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import ResetPasswordEmailForm from '../components/reset-password/ResetPasswordEmailForm';
 import ResetPasswordVerifyForm from '../components/reset-password/ResetPasswordVerifyForm';
 import ResetPasswordNewPasswordForm from '../components/reset-password/ResetPasswordNewPasswordForm';
-import LoginDecoration from '../components/login/LoginDecoration';
 import { resetPasswordService } from '../services';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/auth.css';
@@ -176,7 +175,18 @@ const ResetPasswordPage = () => {
     };
 
     return (
-        <div className="auth-page">
+        <div className="reset-password-page">
+            {isLoading && (
+                <div className="loading-container">
+                    <img className="loading-image" src={require('../assets/imges/loading_gif.gif')} alt="Загрузка..." />
+                    <div className="loading-text">
+                        {stage === 'email' && 'Отправка кода...'}
+                        {stage === 'verify' && 'Проверка кода...'}
+                        {stage === 'newPassword' && 'Сохранение пароля...'}
+                    </div>
+                </div>
+            )}
+
             {/* Панель разработчика - видна только в dev режиме */}
             {process.env.NODE_ENV === 'development' && (
                 <div className="dev-panel">
@@ -209,8 +219,8 @@ const ResetPasswordPage = () => {
                     </div>
                 </div>
             )}
+
             <div className="auth-container">
-                {/* Левая часть - форма */}
                 <div className="auth-content">
                     {stage === 'email' && (
                         <ResetPasswordEmailForm
@@ -244,9 +254,6 @@ const ResetPasswordPage = () => {
                         />
                     )}
                 </div>
-
-                {/* Правая часть - декорация */}
-                <LoginDecoration />
             </div>
         </div>
     );

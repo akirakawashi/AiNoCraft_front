@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/login/LoginForm';
-import AuthDecoration from '../components/login/LoginDecoration';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/auth.css';
 
@@ -107,16 +106,16 @@ const LoginPage = () => {
 
             {/* Контент страницы */}
             <div className="auth-container">
-                <LoginForm 
-                    formData={formData}
-                    onChange={handleChange}
-                    onSubmit={handleSubmit}
-                    validationErrors={validationErrors}
-                    submitError={submitError || error}
-                    isLoading={isLoading}
-                />
-                
-                <AuthDecoration />
+                <div className="auth-content">
+                    <LoginForm 
+                        formData={formData}
+                        onChange={handleChange}
+                        onSubmit={handleSubmit}
+                        validationErrors={validationErrors}
+                        submitError={submitError || error}
+                        isLoading={isLoading}
+                    />
+                </div>
             </div>
         </div>
     );

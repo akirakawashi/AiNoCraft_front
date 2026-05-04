@@ -1,33 +1,21 @@
 import React from 'react';
 
-const AuthDecoration = () => {
-  const decorationItems = [
-    { 
-      icon: '🎁', 
-      title: 'Бонус за регистрацию', 
-      text: 'Получите 100 монет в подарок после регистрации' 
-    },
-    { 
-      icon: '⚡', 
-      title: 'Быстрый старт', 
-      text: 'Начните играть сразу после регистрации' 
-    },
-    { 
-      icon: '👥', 
-      title: 'Присоединяйтесь к нам', 
-      text: 'Станьте частью нашего растущего сообщества' 
-    }
-  ];
-
+// Компонент теперь выводит один выразительный блок информации о регистрации.
+// Если передан `replacementForFastStart`, он будет отображён внутри блока.
+const AuthDecoration = ({ replacementForFastStart = null }) => {
   return (
     <div className="auth-decoration">
-      {decorationItems.map((item, index) => (
-        <div key={index} className="decoration-item">
-          <div className="decoration-icon">{item.icon}</div>
-          <h3>{item.title}</h3>
-          <p>{item.text}</p>
-        </div>
-      ))}
+      <div className="decoration-item decoration-info">
+        {replacementForFastStart ? (
+          replacementForFastStart
+        ) : (
+          <>
+            <div className="decoration-icon">⚡</div>
+            <h3>Быстрый старт</h3>
+            <p>Начните играть сразу после регистрации</p>
+          </>
+        )}
+      </div>
     </div>
   );
 };
