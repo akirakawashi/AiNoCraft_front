@@ -1,70 +1,249 @@
-# Getting Started with Create React App
+# AiNoCraft Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+	<img src="./src/assets/imges/cover_winter.png" alt="AiNoCraft Frontend cover">
+</p>
 
-## Available Scripts
+<p align="center">
+	<img alt="React 19" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=0B1020">
+	<img alt="React Router 7" src="https://img.shields.io/badge/React%20Router-7-CA4245?logo=reactrouter&logoColor=white">
+	<img alt="Node.js 18+" src="https://img.shields.io/badge/Node.js-18%2B-5FA04E?logo=nodedotjs&logoColor=white">
+	<img alt="Nginx" src="https://img.shields.io/badge/Nginx-1.25-009639?logo=nginx&logoColor=white">
+	<img alt="Docker" src="https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white">
+</p>
 
-In the project directory, you can run:
+<p align="center">
+	Frontend-приложение AiNoCraft: лендинг проекта, авторизация, личный кабинет, новости, магазин и страница лаунчера в одном SPA.
+</p>
 
-### `npm start`
+## Обзор
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+AiNoCraft Frontend - это React SPA для сайта игрового проекта AiNoCraft. Приложение объединяет публичную витрину сервера, страницы входа и регистрации, восстановление пароля, личный кабинет пользователя, витрину привилегий, новости и страницу загрузки лаунчера.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Фронтенд рассчитан на работу с backend из соседнего репозитория `AiNoCraft_back` и использует его API для:
 
-### `npm test`
+- логина, logout и refresh-сессий;
+- двухэтапной регистрации через email-код;
+- трёхэтапного сброса пароля;
+- получения баланса игрока;
+- загрузки и получения аватара через presigned URL и MinIO.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Что уже умеет frontend
 
-### `npm run build`
+- Лендинг с hero-секцией, преимуществами, игровыми режимами, галереей, блоком новостей, отзывами и социальными ссылками.
+- Формы логина и регистрации с клиентской валидацией и проверкой логина/email через API.
+- Сброс пароля в 3 шага: email -> код подтверждения -> новый пароль.
+- Защищённый маршрут личного кабинета `/account`.
+- Получение игрового баланса из backend API.
+- Загрузка аватара пользователя напрямую в MinIO через backend-issued presigned URL.
+- Автообновление access token до истечения срока действия.
+- Синхронизация аватара между вкладками через `storage` event и пользовательское событие `avatar-updated`.
+- Отдельные страницы для новостей, документов, магазина, лаунчера и временной заглушки `Coming Soon`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Визуальный стиль
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<p align="center">
+	<img src="./src/assets/imges/Cover_cropped.png" alt="AiNoCraft promo art" width="49%">
+	<img src="./src/assets/imges/cover_winter.png" alt="AiNoCraft winter promo art" width="49%">
+</p>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Эти изображения уже лежат в репозитории и могут использоваться как промо-ассеты для README, презентаций, страниц деплоя или будущих лендинговых блоков.
 
-### `npm run eject`
+## Архитектура
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```mermaid
+flowchart LR
+	Browser["Browser"] --> Nginx["Nginx / CRA dev server"]
+	Nginx --> SPA["React SPA"]
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+	SPA --> PublicApi["Public API requests"]
+	SPA --> ProtectedApi["Protected API requests"]
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+	PublicApi --> Backend["AiNoCraft Backend"]
+	ProtectedApi --> Backend
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+	Backend --> Auth["JWT access token + refresh cookie"]
+	Backend --> Minio["Presigned URL for avatar upload"]
 
-## Learn More
+	SPA --> Session["sessionStorage: access token"]
+	SPA --> Local["localStorage: cached avatar"]
+	Minio --> Storage[(MinIO)]
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Текущий статус интеграций
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Зона | Статус | Комментарий |
+| --- | --- | --- |
+| Авторизация | Готово | Логин, logout, refresh и protected routes уже подключены |
+| Регистрация | Готово | Есть init/verify/resend flow с проверкой login/email |
+| Сброс пароля | Готово | Реализован 3-step flow через backend API |
+| Личный кабинет | Частично | Баланс и аватар интегрированы, часть полей и статистики пока статические |
+| Магазин | Частично | Каталог, детали и корзина есть; checkout пока имитационный |
+| Новости | Частично | Страница и модалки готовы, контент сейчас из локальных данных |
+| Лаунчер | Готово для витрины | Есть промо-страница, блок скачивания и системные требования |
 
-### Code Splitting
+## Стек
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Слой | Технологии |
+| --- | --- |
+| UI | React 19, React DOM 19 |
+| Маршрутизация | React Router DOM 7 |
+| Сборка | Create React App, react-scripts 5 |
+| Работа с изображениями | react-easy-crop |
+| HTTP/API | собственные `PublicApiService` и `ProtectedApiService` |
+| Продакшен-раздача | Nginx |
+| Контейнеризация | Docker, Docker Compose |
 
-### Analyzing the Bundle Size
+## Быстрый старт
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Вариант 1. Локальный запуск через Node.js
 
-### Making a Progressive Web App
+Подходит, если вы разрабатываете интерфейс локально и хотите быстро проверять изменения.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. Установите Node.js `18+`.
+2. Установите зависимости:
 
-### Advanced Configuration
+```bash
+npm ci
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+3. Создайте файл `.env.local` в корне проекта:
 
-### Deployment
+```env
+REACT_APP_API_URL=http://localhost:8000/api/v1
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+4. Запустите dev-сервер:
 
-### `npm run build` fails to minify
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+После запуска приложение будет доступно по адресу `http://localhost:3000`.
+
+> Для полноценной работы нужен запущенный backend AiNoCraft с корректно настроенным CORS и API по пути `/api/v1`.
+
+### Вариант 2. Разработка через Docker Compose
+
+Если удобнее работать в контейнере:
+
+```bash
+docker compose -f docker-compose.dev.yml up --build
+```
+
+Этот сценарий использует `Dockerfile.dev`, монтирует текущую директорию в контейнер и по умолчанию прокидывает:
+
+```env
+REACT_APP_API_URL=http://localhost:8000/api/v1
+```
+
+### Вариант 3. Production build
+
+Сборка production-образа из текущего checkout:
+
+```bash
+docker build -t ainocraft-frontend --build-arg REACT_APP_API_URL=https://api.ainocraft.com/api/v1 .
+docker run -p 8080:80 ainocraft-frontend
+```
+
+После запуска production-сборка будет доступна по адресу `http://localhost:8080`.
+
+> Важно: `docker-compose.prod.yml` в текущем виде запускает образ `ghcr.io/ainocraft/ainocraft-frontend:latest`, а не собирает приложение из локального репозитория.
+
+## Переменные окружения
+
+Фронтенд использует одну ключевую переменную окружения:
+
+| Переменная | Назначение | Пример |
+| --- | --- | --- |
+| `REACT_APP_API_URL` | базовый URL backend API | `http://localhost:8000/api/v1` |
+
+Если переменная не задана, приложение использует fallback-значение:
+
+```text
+https://api.ainocraft.com/api/v1
+```
+
+Это значение задано в `src/services/core/ApiConfig.js`.
+
+## Как устроена аутентификация на фронтенде
+
+| Механика | Как работает |
+| --- | --- |
+| Access token | хранится в `sessionStorage` |
+| Refresh | выполняется через backend endpoint `/refresh`, токен обновляется заранее до истечения |
+| Protected routes | маршрут `/account` закрыт через `ProtectedRoute` |
+| Сброс auth state | при невалидной сессии контекст сбрасывает пользователя и кэш |
+| Кэш аватара | хранится в `localStorage` и синхронизируется между вкладками |
+| Upload avatar | backend отдаёт presigned URL, фронтенд загружает файл напрямую в MinIO и подтверждает загрузку |
+
+## Основные маршруты
+
+| Маршрут | Назначение | Доступ |
+| --- | --- | --- |
+| `/` | главная страница проекта | public |
+| `/login` | вход пользователя | public |
+| `/register` | регистрация + подтверждение email | public |
+| `/reset-password` | восстановление пароля | public |
+| `/shop` | витрина привилегий и корзина | public |
+| `/news` | список новостей и modal-view по `newsId` | public |
+| `/terms` | документы сервера | public |
+| `/launcher` | страница лаунчера и системных требований | public |
+| `/coming-soon` | заглушка для будущих возможностей | public |
+| `/account` | личный кабинет игрока | protected |
+
+## Основные сервисы API
+
+| Сервис | Ответственность |
+| --- | --- |
+| `auth/AuthService` | login, register, verify, refresh, logout, проверка login/email |
+| `auth/ResetPasswordService` | init, verify и finalize для восстановления пароля |
+| `user/UserService` | баланс, аватар, смена пароля, upload flow через MinIO |
+| `core/PublicApiService` | публичные HTTP-запросы без access token |
+| `core/ProtectedApiService` | запросы с access token и защищёнными endpoint'ами |
+
+## Структура проекта
+
+```text
+src/
+	App.jsx                 # маршруты приложения и общая оболочка
+	index.js                # точка входа React
+	assets/                 # изображения и визуальные ассеты
+	components/             # UI-компоненты по доменам
+	contexts/               # AuthContext и глобальное состояние
+	data/                   # локальные данные для новостей и контента
+	pages/                  # маршрутные страницы
+	services/               # HTTP-клиенты, auth и user API
+	styles/                 # глобальные и page-level стили
+	utils/                  # вспомогательные функции и валидация
+Dockerfile               # production-сборка на Node + Nginx
+Dockerfile.dev           # dev-контейнер для локальной разработки
+docker-compose.dev.yml   # docker-сценарий разработки
+docker-compose.prod.yml  # docker-сценарий запуска опубликованного образа
+nginx.conf               # SPA fallback и кэширование статики
+```
+
+## Полезные команды
+
+```bash
+npm start          # dev-сервер
+npm run build      # production build в папку build/
+npm test           # тестовый раннер CRA
+docker compose -f docker-compose.dev.yml up --build
+docker build -t ainocraft-frontend --build-arg REACT_APP_API_URL=http://localhost:8000/api/v1 .
+```
+
+## Что стоит учитывать дальше
+
+- Добавить `.env.example`, чтобы onboarding был полностью самодостаточным.
+- Довести интеграцию магазина до реального checkout/payment flow.
+- Перевести локальные данные новостей и части личного кабинета на backend API.
+- Добавить smoke/integration tests для auth flow и protected routes.
+
+## Связанные части проекта
+
+- `AiNoCraft_back` - backend API, авторизация, работа с MinIO, баланс, письма и игровые endpoint'ы.
+- `AiNoCraft_Launc` - отдельный desktop launcher проекта.
+- `AiNoCraft_dep` - инфраструктурные docker-конфиги и Nginx-слой.
+
+Если нужен единый README на весь AiNoCraft, этот файл уже можно использовать как фронтенд-секцию и затем собрать общий root-level README вокруг backend, frontend, launcher и deployment-частей.
